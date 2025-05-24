@@ -4,9 +4,9 @@ import os
 
 app = Flask(__name__)
 
-# --- Model Configuration ---
+# --- Configuração do Modelo ---
 model_name = os.environ.get("GPT4ALL_MODEL", "orca_mini_v3_7b.Q4_0.gguf")
-model_path = os.environ.get("GPT4ALL_MODEL_PATH")  # Optional: specify a directory for models
+model_path = os.environ.get("GPT4ALL_MODEL_PATH")  # Opcional: especificar diretório
 
 try:
     if model_path:
@@ -23,13 +23,13 @@ except Exception as e:
 @app.route('/api/v1/generate', methods=['POST'])
 def generate():
     if model is None:
-        return jsonify({"error": "Model not loaded. Please check server logs."}), 500
+        return jsonify({"error": "Modelo não carregado. Verifique os logs do servidor."}), 500
 
     try:
         data = request.get_json()
         if not data or 'message' not in data:
-            return jsonify({"error": "Invalid request: 'message' key missing or not JSON."}), 400
-        
+            return jsonify({"error": "Requisição inválida: chave 'message' ausente ou não é JSON."}), 400
+
         prompt = data['message']
         app.logger.info(f"🟢 Prompt recebido: {prompt}")
 
