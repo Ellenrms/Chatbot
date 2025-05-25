@@ -24,14 +24,23 @@ public class ChatService {
         this.gptServerUrl = gptServerUrl;
     }
 
-    public String ask(String prompt) {
+    // Parâmetro renomeado para userQuestion
+    public String ask(String userQuestion) {
         try {
-            ChatRequest req = new ChatRequest(prompt, 150);
+            // Instrução para o modelo LLM (engenharia de prompt)
+            String systemContext = "Você é um chatbot especializado em ensinar programação Java para iniciantes. Por favor, explique o seguinte conceito de Java de forma clara, concisa e com exemplos simples se possível: ";
+            String finalPromptToLLM = systemContext + userQuestion;
+
+            // Usar finalPromptToLLM e aumentar maxNewTokens para 300
+            ChatRequest req = new ChatRequest(finalPromptToLLM, 300); 
+            
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<ChatRequest> entity = new HttpEntity<>(req, headers);
 
-            log.info("Enviando ao GPT4All: {}", req);
+            // Log do prompt completo que está sendo enviado
+            log.info("Enviando prompt completo para LLM: {}", finalPromptToLLM);
+            
             ResponseEntity<String> respEntity = rest.exchange(
                     gptServerUrl,
                     HttpMethod.POST,
