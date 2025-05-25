@@ -38,15 +38,14 @@
             userMessageElement.textContent = userMessage;
             messagesContainer.appendChild(userMessageElement);
 
-            // Enviar a mensagem para o servidor via AJAX
+            // Enviar a mensagem para o servidor via AJAX (AJUSTADO)
             fetch('/chat/ask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userMessage: userMessage,
-                    botResponse: ""
+                    userMessage: userMessage  // Campo correto
                 })
             })
             .then(response => response.json())
